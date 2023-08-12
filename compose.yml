@@ -1,0 +1,56 @@
+version: '3.9'
+
+services:
+  web:
+    container_name: gunicorn_container
+    image: morpex8/gunicorn_container:latest
+    volumes:
+      - static:/var/www/proj/static
+    restart: "always"
+    expose:
+      - 8000
+    environment:
+      DATABASE: main
+      DBHOST: postgres_container
+      DBPORT: 5432
+      DBUSER: lamer
+      DBPASSWORD: 4w3s0m3
+      DJANGO_SUPERUSER_USERNAME: admin
+      DJANGO_SUPERUSER_PASSWORD: admin
+      DJANGO_SUPERUSER_EMAIL: test@test.com
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    container_name: postgres_container
+    image: morpex8/postgres_container:latest
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+    ports:
+      - 5432
+    environment:
+      POSTGRES_DB: main
+      POSTGRES_USER: lamer
+      POSTGRES_PASSWORD: 4w3s0m3
+    healthcheck:
+      test: "pg_isready -U lamer -d main"
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  nginx:
+    container_name: nginx_container
+    image: morpex8/nginx_container:latest
+    volumes:
+      - static:/var/www/proj/static
+    ports:
+      - 8000:80
+    depends_on:
+      - web
+    restart: "always"
+volumes:
+  static:
+  postgres_data:
