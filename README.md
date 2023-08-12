@@ -4,7 +4,7 @@
 # Решение
 Скачиваем файл compose.yml
 В командной строке, переходим в директорию проекта и набираем:
-sudo docker-compose up -d //В среде linux docker-compose up -f //Docker Desktop (Windows или Macos) После завершения установки и запуска контейнеров, заходим в браузере по адресу:
+sudo docker-compose up -f //В среде linux docker-compose up -f //Docker Desktop (Windows или Macos) После завершения установки и запуска контейнеров, заходим в браузере по адресу:
 (в случае не запуска какого-либо контейнера, запустить его в ручную) http://localhost:8000
 Войти на страницу администрирования можно по адресу:
 http://localhost:8000/admin
